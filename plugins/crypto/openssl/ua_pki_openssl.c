@@ -508,7 +508,9 @@ UA_CertificateVerification_Verify (const UA_CertificateVerification *cv,
     X509_STORE_CTX_set_flags (storeCtx, X509_V_FLAG_CHECK_SS_SIGNATURE);
 
     if (X509_check_issued(certificateX509,certificateX509) != X509_V_OK) {
-        X509_STORE_CTX_set_flags (storeCtx, X509_V_FLAG_CRL_CHECK);
+        if (sk_X509_CRL_num (ctx->skCrls) > 0) {
+            X509_STORE_CTX_set_flags (storeCtx, X509_V_FLAG_CRL_CHECK);
+        }
     }
 
     /* This condition will check whether the certificate is a User certificate or a CA certificate.
@@ -547,7 +549,9 @@ UA_CertificateVerification_Verify (const UA_CertificateVerification *cv,
             X509_STORE_CTX_set0_crls (storeCtx, ctx->skCrls);
 
             /* Set flags for CRL check */
-            X509_STORE_CTX_set_flags (storeCtx, X509_V_FLAG_CRL_CHECK | X509_V_FLAG_CRL_CHECK_ALL);
+            if (sk_X509_CRL_num (ctx->skCrls) > 0) {
+                X509_STORE_CTX_set_flags (storeCtx, X509_V_FLAG_CRL_CHECK | X509_V_FLAG_CRL_CHECK_ALL);
+            }
 
             opensslRet = X509_verify_cert (storeCtx);
             if (opensslRet != 1) {
