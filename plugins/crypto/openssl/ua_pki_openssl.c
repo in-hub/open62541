@@ -566,7 +566,7 @@ UA_CertificateVerification_Verify (const UA_CertificateVerification *cv,
         opensslRet = X509_STORE_CTX_get_error (storeCtx);
 
         /* Check the issued certificate of a CA that is not trusted but available */
-        if(opensslRet == X509_V_ERR_SELF_SIGNED_CERT_IN_CHAIN){
+        if(opensslRet == X509_V_ERR_SELF_SIGNED_CERT_IN_CHAIN || opensslRet == X509_V_ERR_DEPTH_ZERO_SELF_SIGNED_CERT){
             int                     trusted_cert_len = sk_X509_num(ctx->skTrusted);
             int                     cmpVal;
             X509                    *trusted_cert;
