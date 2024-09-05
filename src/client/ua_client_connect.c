@@ -29,7 +29,7 @@
 
 #define UA_MINMESSAGESIZE 8192
 #define UA_SESSION_LOCALNONCELENGTH 32
-#define MAX_DATA_SIZE 4096
+#define MAX_DATA_SIZE 8192
 #define REVERSE_CONNECT_INDICATOR (void *)(uintptr_t)0xFFFFFFFF
 
 static void initConnect(UA_Client *client);
